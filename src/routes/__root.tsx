@@ -1,5 +1,6 @@
 import {
   HeadContent,
+  Link,
   Scripts,
   createRootRouteWithContext,
 } from '@tanstack/react-router'
@@ -11,6 +12,8 @@ import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
 import appCss from '../styles.css?url'
 
 import type { QueryClient } from '@tanstack/react-query'
+import { Button } from '#/components/ui/button.tsx'
+import { ArrowLeft } from 'lucide-react'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -39,8 +42,14 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
   }),
   shellComponent: RootDocument,
   notFoundComponent: () => (
-    <div>
-      <h1>Something went wrong...</h1>
+    <div className="w-screen h-screen grid place-items-center">
+      <div className="flex flex-col items-center gap-y-2">
+        <h1 className="text-lg">Page Not Found - 404</h1>
+        <Button nativeButton={false} render={<Link to="/dashboard" />}>
+          <ArrowLeft />
+          Back to Dashboard
+        </Button>
+      </div>
     </div>
   ),
 })

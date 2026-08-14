@@ -1,3 +1,4 @@
+import { cn } from '#/lib/utils.ts'
 import {
   Sidebar,
   SidebarContent,
@@ -10,10 +11,21 @@ import {
   SidebarRail,
   SidebarTrigger,
 } from '@/components/ui/sidebar'
-import { Link, type LinkProps } from '@tanstack/react-router'
-import { LayoutDashboard, UserRound } from 'lucide-react'
+import {
+  Link,
+  type LinkComponentProps,
+  type LinkProps,
+} from '@tanstack/react-router'
+import {
+  LayoutDashboard,
+  UserRound,
+  CalendarClock,
+  PersonStanding,
+  UsersRound,
+  Settings,
+} from 'lucide-react'
 import type React from 'react'
-import type { ComponentPropsWithRef, JSX, PropsWithChildren } from 'react'
+import type { ComponentProps, ComponentPropsWithRef } from 'react'
 
 export function AppSideBar() {
   return (
@@ -42,20 +54,23 @@ function AppSideBarHeader() {
 function SideNavLink({
   LucideIcon,
   label,
+  className,
   ...props
-}: Omit<LinkProps, 'children'> & {
+}: Omit<LinkComponentProps, 'children'> & {
   label: string
   LucideIcon: React.ElementType<ComponentPropsWithRef<'svg'>>
 }) {
   return (
-    <Link {...props}>
+    <Link
+      className={cn("data-[status='active']:bg-primary", className)}
+      {...props}
+    >
       {({ isActive }) => {
-        console.log({ isActive, label })
         if (isActive) {
           return (
             <>
-              {<LucideIcon />}
-              {label}
+              {<LucideIcon className="text-white" />}
+              <span className="text-white">{label}</span>
             </>
           )
         }
@@ -70,54 +85,31 @@ function SideNavLink({
   )
 }
 
+const nav: Array<ComponentProps<typeof SideNavLink>> = [
+  { to: '/dashboard', label: 'Dashboard', LucideIcon: LayoutDashboard },
+  { to: '/appointments', label: 'Appointments', LucideIcon: CalendarClock },
+  { to: '/patients', label: 'Patients', LucideIcon: PersonStanding },
+  { to: '/practitioners', label: 'Practitioners', LucideIcon: UsersRound },
+  { to: '/settings', label: 'Settings', LucideIcon: Settings },
+]
+
 function AppSideBarContent() {
   return (
     <SidebarContent>
       <SidebarMenu className="p-2">
-        <SidebarMenuItem>
-          <SidebarMenuButton
-            render={
-              <SideNavLink
-                label="Dashboard"
-                LucideIcon={LayoutDashboard}
-                to="/dashboard"
-              />
-            }
-          />
-        </SidebarMenuItem>
-        <SidebarMenuItem>
-          <SidebarMenuButton
-            render={
-              <SideNavLink
-                label="Dashboard"
-                LucideIcon={LayoutDashboard}
-                to="/patients"
-              />
-            }
-          />
-        </SidebarMenuItem>
-        <SidebarMenuItem>
-          <SidebarMenuButton
-            render={
-              <SideNavLink
-                label="Dashboard"
-                LucideIcon={LayoutDashboard}
-                to="/appointments"
-              />
-            }
-          />
-        </SidebarMenuItem>
-        <SidebarMenuItem>
-          <SidebarMenuButton
-            render={
-              <SideNavLink
-                label="Dashboard"
-                LucideIcon={LayoutDashboard}
-                to="/settings"
-              />
-            }
-          />
-        </SidebarMenuItem>
+        {nav.map((props, idx) => (
+          <SidebarMenuItem key={idx}>
+            <SidebarMenuButton
+              render={
+                <SideNavLink
+                  label={props.label}
+                  LucideIcon={props.LucideIcon}
+                  to={props.to}
+                />
+              }
+            />
+          </SidebarMenuItem>
+        ))}
       </SidebarMenu>
     </SidebarContent>
   )
