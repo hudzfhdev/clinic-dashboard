@@ -85,12 +85,39 @@ function SideNavLink({
   )
 }
 
-const nav: Array<ComponentProps<typeof SideNavLink>> = [
-  { to: '/dashboard', label: 'Dashboard', LucideIcon: LayoutDashboard },
-  { to: '/appointments', label: 'Appointments', LucideIcon: CalendarClock },
-  { to: '/patients', label: 'Patients', LucideIcon: PersonStanding },
-  { to: '/practitioners', label: 'Practitioners', LucideIcon: UsersRound },
-  { to: '/settings', label: 'Settings', LucideIcon: Settings },
+const nav: Array<
+  ComponentProps<typeof SideNavLink> & { getSlug: (slug: string) => string }
+> = [
+  {
+    to: '/$slug/dashboard',
+    getSlug: (slug) => slug,
+    label: 'Dashboard',
+    LucideIcon: LayoutDashboard,
+  },
+  {
+    to: '/$slug/appointments',
+    getSlug: (slug) => slug,
+    label: 'Appointments',
+    LucideIcon: CalendarClock,
+  },
+  {
+    to: '/$slug/patients',
+    getSlug: (slug) => slug,
+    label: 'Patients',
+    LucideIcon: PersonStanding,
+  },
+  {
+    to: '/practitioners',
+    getSlug: (slug) => slug,
+    label: 'Practitioners',
+    LucideIcon: UsersRound,
+  },
+  {
+    to: '/$slug/settings',
+    getSlug: (slug) => slug,
+    label: 'Settings',
+    LucideIcon: Settings,
+  },
 ]
 
 function AppSideBarContent() {

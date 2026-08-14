@@ -30,7 +30,7 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
         content: 'width=device-width, initial-scale=1',
       },
       {
-        title: 'TanStack Start Starter',
+        title: 'Clinic Dashboard',
       },
     ],
     links: [
@@ -45,7 +45,12 @@ export const Route = createRootRouteWithContext<MyRouterContext>()({
     <div className="w-screen h-screen grid place-items-center">
       <div className="flex flex-col items-center gap-y-2">
         <h1 className="text-lg">Page Not Found - 404</h1>
-        <Button nativeButton={false} render={<Link to="/dashboard" />}>
+        <Button
+          nativeButton={false}
+          render={
+            <Link to="/$slug/dashboard" params={{ slug: 'haya-clinic' }} />
+          }
+        >
           <ArrowLeft />
           Back to Dashboard
         </Button>

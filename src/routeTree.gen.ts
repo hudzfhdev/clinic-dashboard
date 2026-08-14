@@ -12,12 +12,13 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as IndexRouteImport } from './routes/index'
 import { Route as PrivateRouteImport } from './routes/_private'
 import { Route as PublicRouteImport } from './routes/_public'
-import { Route as PrivateAppointmentsRouteImport } from './routes/_private/appointments'
-import { Route as PrivateDashboardRouteImport } from './routes/_private/dashboard'
-import { Route as PrivatePatientsRouteImport } from './routes/_private/patients'
-import { Route as PrivateSettingsRouteImport } from './routes/_private/settings'
+import { Route as PrivateSlugRouteImport } from './routes/_private/$slug'
 import { Route as PublicLoginRouteImport } from './routes/_public/login'
 import { Route as PublicSignUpRouteImport } from './routes/_public/sign-up'
+import { Route as PrivateSlugAppointmentsRouteImport } from './routes/_private/$slug.appointments'
+import { Route as PrivateSlugDashboardRouteImport } from './routes/_private/$slug.dashboard'
+import { Route as PrivateSlugPatientsRouteImport } from './routes/_private/$slug.patients'
+import { Route as PrivateSlugSettingsRouteImport } from './routes/_private/$slug.settings'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -32,24 +33,9 @@ const PublicRoute = PublicRouteImport.update({
   id: '/_public',
   getParentRoute: () => rootRouteImport,
 } as any)
-const PrivateAppointmentsRoute = PrivateAppointmentsRouteImport.update({
-  id: '/appointments',
-  path: '/appointments',
-  getParentRoute: () => PrivateRoute,
-} as any)
-const PrivateDashboardRoute = PrivateDashboardRouteImport.update({
-  id: '/dashboard',
-  path: '/dashboard',
-  getParentRoute: () => PrivateRoute,
-} as any)
-const PrivatePatientsRoute = PrivatePatientsRouteImport.update({
-  id: '/patients',
-  path: '/patients',
-  getParentRoute: () => PrivateRoute,
-} as any)
-const PrivateSettingsRoute = PrivateSettingsRouteImport.update({
-  id: '/settings',
-  path: '/settings',
+const PrivateSlugRoute = PrivateSlugRouteImport.update({
+  id: '/$slug',
+  path: '/$slug',
   getParentRoute: () => PrivateRoute,
 } as any)
 const PublicLoginRoute = PublicLoginRouteImport.update({
@@ -62,67 +48,93 @@ const PublicSignUpRoute = PublicSignUpRouteImport.update({
   path: '/sign-up',
   getParentRoute: () => PublicRoute,
 } as any)
+const PrivateSlugAppointmentsRoute = PrivateSlugAppointmentsRouteImport.update({
+  id: '/appointments',
+  path: '/appointments',
+  getParentRoute: () => PrivateSlugRoute,
+} as any)
+const PrivateSlugDashboardRoute = PrivateSlugDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => PrivateSlugRoute,
+} as any)
+const PrivateSlugPatientsRoute = PrivateSlugPatientsRouteImport.update({
+  id: '/patients',
+  path: '/patients',
+  getParentRoute: () => PrivateSlugRoute,
+} as any)
+const PrivateSlugSettingsRoute = PrivateSlugSettingsRouteImport.update({
+  id: '/settings',
+  path: '/settings',
+  getParentRoute: () => PrivateSlugRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
-  '/appointments': typeof PrivateAppointmentsRoute
-  '/dashboard': typeof PrivateDashboardRoute
-  '/patients': typeof PrivatePatientsRoute
-  '/settings': typeof PrivateSettingsRoute
+  '/$slug': typeof PrivateSlugRouteWithChildren
   '/login': typeof PublicLoginRoute
   '/sign-up': typeof PublicSignUpRoute
+  '/$slug/appointments': typeof PrivateSlugAppointmentsRoute
+  '/$slug/dashboard': typeof PrivateSlugDashboardRoute
+  '/$slug/patients': typeof PrivateSlugPatientsRoute
+  '/$slug/settings': typeof PrivateSlugSettingsRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
-  '/appointments': typeof PrivateAppointmentsRoute
-  '/dashboard': typeof PrivateDashboardRoute
-  '/patients': typeof PrivatePatientsRoute
-  '/settings': typeof PrivateSettingsRoute
+  '/$slug': typeof PrivateSlugRouteWithChildren
   '/login': typeof PublicLoginRoute
   '/sign-up': typeof PublicSignUpRoute
+  '/$slug/appointments': typeof PrivateSlugAppointmentsRoute
+  '/$slug/dashboard': typeof PrivateSlugDashboardRoute
+  '/$slug/patients': typeof PrivateSlugPatientsRoute
+  '/$slug/settings': typeof PrivateSlugSettingsRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/': typeof IndexRoute
   '/_private': typeof PrivateRouteWithChildren
   '/_public': typeof PublicRouteWithChildren
-  '/_private/appointments': typeof PrivateAppointmentsRoute
-  '/_private/dashboard': typeof PrivateDashboardRoute
-  '/_private/patients': typeof PrivatePatientsRoute
-  '/_private/settings': typeof PrivateSettingsRoute
+  '/_private/$slug': typeof PrivateSlugRouteWithChildren
   '/_public/login': typeof PublicLoginRoute
   '/_public/sign-up': typeof PublicSignUpRoute
+  '/_private/$slug/appointments': typeof PrivateSlugAppointmentsRoute
+  '/_private/$slug/dashboard': typeof PrivateSlugDashboardRoute
+  '/_private/$slug/patients': typeof PrivateSlugPatientsRoute
+  '/_private/$slug/settings': typeof PrivateSlugSettingsRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths:
     | '/'
-    | '/appointments'
-    | '/dashboard'
-    | '/patients'
-    | '/settings'
+    | '/$slug'
     | '/login'
     | '/sign-up'
+    | '/$slug/appointments'
+    | '/$slug/dashboard'
+    | '/$slug/patients'
+    | '/$slug/settings'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
-    | '/appointments'
-    | '/dashboard'
-    | '/patients'
-    | '/settings'
+    | '/$slug'
     | '/login'
     | '/sign-up'
+    | '/$slug/appointments'
+    | '/$slug/dashboard'
+    | '/$slug/patients'
+    | '/$slug/settings'
   id:
     | '__root__'
     | '/'
     | '/_private'
     | '/_public'
-    | '/_private/appointments'
-    | '/_private/dashboard'
-    | '/_private/patients'
-    | '/_private/settings'
+    | '/_private/$slug'
     | '/_public/login'
     | '/_public/sign-up'
+    | '/_private/$slug/appointments'
+    | '/_private/$slug/dashboard'
+    | '/_private/$slug/patients'
+    | '/_private/$slug/settings'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -154,32 +166,11 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicRouteImport
       parentRoute: typeof rootRouteImport
     }
-    '/_private/appointments': {
-      id: '/_private/appointments'
-      path: '/appointments'
-      fullPath: '/appointments'
-      preLoaderRoute: typeof PrivateAppointmentsRouteImport
-      parentRoute: typeof PrivateRoute
-    }
-    '/_private/dashboard': {
-      id: '/_private/dashboard'
-      path: '/dashboard'
-      fullPath: '/dashboard'
-      preLoaderRoute: typeof PrivateDashboardRouteImport
-      parentRoute: typeof PrivateRoute
-    }
-    '/_private/patients': {
-      id: '/_private/patients'
-      path: '/patients'
-      fullPath: '/patients'
-      preLoaderRoute: typeof PrivatePatientsRouteImport
-      parentRoute: typeof PrivateRoute
-    }
-    '/_private/settings': {
-      id: '/_private/settings'
-      path: '/settings'
-      fullPath: '/settings'
-      preLoaderRoute: typeof PrivateSettingsRouteImport
+    '/_private/$slug': {
+      id: '/_private/$slug'
+      path: '/$slug'
+      fullPath: '/$slug'
+      preLoaderRoute: typeof PrivateSlugRouteImport
       parentRoute: typeof PrivateRoute
     }
     '/_public/login': {
@@ -196,21 +187,61 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicSignUpRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/_private/$slug/appointments': {
+      id: '/_private/$slug/appointments'
+      path: '/appointments'
+      fullPath: '/$slug/appointments'
+      preLoaderRoute: typeof PrivateSlugAppointmentsRouteImport
+      parentRoute: typeof PrivateSlugRoute
+    }
+    '/_private/$slug/dashboard': {
+      id: '/_private/$slug/dashboard'
+      path: '/dashboard'
+      fullPath: '/$slug/dashboard'
+      preLoaderRoute: typeof PrivateSlugDashboardRouteImport
+      parentRoute: typeof PrivateSlugRoute
+    }
+    '/_private/$slug/patients': {
+      id: '/_private/$slug/patients'
+      path: '/patients'
+      fullPath: '/$slug/patients'
+      preLoaderRoute: typeof PrivateSlugPatientsRouteImport
+      parentRoute: typeof PrivateSlugRoute
+    }
+    '/_private/$slug/settings': {
+      id: '/_private/$slug/settings'
+      path: '/settings'
+      fullPath: '/$slug/settings'
+      preLoaderRoute: typeof PrivateSlugSettingsRouteImport
+      parentRoute: typeof PrivateSlugRoute
+    }
   }
 }
 
+interface PrivateSlugRouteChildren {
+  PrivateSlugAppointmentsRoute: typeof PrivateSlugAppointmentsRoute
+  PrivateSlugDashboardRoute: typeof PrivateSlugDashboardRoute
+  PrivateSlugPatientsRoute: typeof PrivateSlugPatientsRoute
+  PrivateSlugSettingsRoute: typeof PrivateSlugSettingsRoute
+}
+
+const PrivateSlugRouteChildren: PrivateSlugRouteChildren = {
+  PrivateSlugAppointmentsRoute: PrivateSlugAppointmentsRoute,
+  PrivateSlugDashboardRoute: PrivateSlugDashboardRoute,
+  PrivateSlugPatientsRoute: PrivateSlugPatientsRoute,
+  PrivateSlugSettingsRoute: PrivateSlugSettingsRoute,
+}
+
+const PrivateSlugRouteWithChildren = PrivateSlugRoute._addFileChildren(
+  PrivateSlugRouteChildren,
+)
+
 interface PrivateRouteChildren {
-  PrivateAppointmentsRoute: typeof PrivateAppointmentsRoute
-  PrivateDashboardRoute: typeof PrivateDashboardRoute
-  PrivatePatientsRoute: typeof PrivatePatientsRoute
-  PrivateSettingsRoute: typeof PrivateSettingsRoute
+  PrivateSlugRoute: typeof PrivateSlugRouteWithChildren
 }
 
 const PrivateRouteChildren: PrivateRouteChildren = {
-  PrivateAppointmentsRoute: PrivateAppointmentsRoute,
-  PrivateDashboardRoute: PrivateDashboardRoute,
-  PrivatePatientsRoute: PrivatePatientsRoute,
-  PrivateSettingsRoute: PrivateSettingsRoute,
+  PrivateSlugRoute: PrivateSlugRouteWithChildren,
 }
 
 const PrivateRouteWithChildren =
