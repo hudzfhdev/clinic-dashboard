@@ -10,11 +10,12 @@ import {
   SidebarMenuItem,
   SidebarRail,
   SidebarTrigger,
+  useSidebar,
 } from '@/components/ui/sidebar'
 import {
   Link,
+  useParams,
   type LinkComponentProps,
-  type LinkProps,
 } from '@tanstack/react-router'
 import {
   LayoutDashboard,
@@ -26,10 +27,12 @@ import {
 } from 'lucide-react'
 import type React from 'react'
 import type { ComponentProps, ComponentPropsWithRef } from 'react'
+import { BrandIconWithLabel } from './icons/brand.icon'
+import { TooltipWrapper } from '@/components/ui/tooltip'
 
 export function AppSideBar() {
   return (
-    <Sidebar>
+    <Sidebar collapsible="icon">
       <AppSideBarHeader />
       <AppSideBarContent />
       <AppSideBarFooter />
@@ -39,14 +42,21 @@ export function AppSideBar() {
 }
 
 function AppSideBarHeader() {
+  const { state } = useSidebar()
   return (
-    <SidebarHeader className="flex justify-between flex-row">
-      <SidebarMenu>
-        <SidebarMenuItem>
-          <h1 className="text-xl">LOGO</h1>
-        </SidebarMenuItem>
-      </SidebarMenu>
-      <SidebarTrigger />
+    <SidebarHeader className="border-b flex justify-between items-center flex-row">
+      {state === 'expanded' ? (
+        <SidebarMenu>
+          <SidebarMenuItem>
+            <BrandIconWithLabel className="h-10 w-32" />
+          </SidebarMenuItem>
+        </SidebarMenu>
+      ) : null}
+      <TooltipWrapper
+        content={<span>{state === 'collapsed' ? 'Expand' : 'Close'}</span>}
+      >
+        <SidebarTrigger />
+      </TooltipWrapper>
     </SidebarHeader>
   )
 }
@@ -85,42 +95,36 @@ function SideNavLink({
   )
 }
 
-const nav: Array<
-  ComponentProps<typeof SideNavLink> & { getSlug: (slug: string) => string }
-> = [
+const nav: Array<ComponentProps<typeof SideNavLink>> = [
   {
     to: '/$slug/dashboard',
-    getSlug: (slug) => slug,
     label: 'Dashboard',
     LucideIcon: LayoutDashboard,
   },
   {
     to: '/$slug/appointments',
-    getSlug: (slug) => slug,
     label: 'Appointments',
     LucideIcon: CalendarClock,
   },
   {
     to: '/$slug/patients',
-    getSlug: (slug) => slug,
     label: 'Patients',
     LucideIcon: PersonStanding,
   },
   {
-    to: '/practitioners',
-    getSlug: (slug) => slug,
+    to: '/$slug/practitioners',
     label: 'Practitioners',
     LucideIcon: UsersRound,
   },
   {
     to: '/$slug/settings',
-    getSlug: (slug) => slug,
     label: 'Settings',
     LucideIcon: Settings,
   },
 ]
 
 function AppSideBarContent() {
+  const { slug } = useParams({ from: '/_private/$slug' })
   return (
     <SidebarContent>
       <SidebarMenu className="p-2">
@@ -132,6 +136,7 @@ function AppSideBarContent() {
                   label={props.label}
                   LucideIcon={props.LucideIcon}
                   to={props.to}
+                  params={{ slug }}
                 />
               }
             />
