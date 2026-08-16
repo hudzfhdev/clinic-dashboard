@@ -66,14 +66,16 @@ function TooltipContent({
 
 function TooltipWrapper({
   children,
+  renderTrigger,
   content,
 }: {
   content: ReactNode
-  children: ReactElement
+  children?: ReactNode
+  renderTrigger?: ReactElement
 }) {
   return (
     <Tooltip>
-      <TooltipTrigger render={children} />
+      <TooltipTrigger render={renderTrigger}>{children}</TooltipTrigger>
       <TooltipContent>{content}</TooltipContent>
     </Tooltip>
   )

@@ -1,4 +1,4 @@
-import { cn } from '#/lib/utils.ts'
+import { cn } from '@/lib/utils.ts'
 import {
   Sidebar,
   SidebarContent,
@@ -22,8 +22,8 @@ import {
   UserRound,
   CalendarClock,
   PersonStanding,
-  UsersRound,
   Settings,
+  Stethoscope,
 } from 'lucide-react'
 import type React from 'react'
 import type { ComponentProps, ComponentPropsWithRef } from 'react'
@@ -54,9 +54,8 @@ function AppSideBarHeader() {
       ) : null}
       <TooltipWrapper
         content={<span>{state === 'collapsed' ? 'Expand' : 'Close'}</span>}
-      >
-        <SidebarTrigger />
-      </TooltipWrapper>
+        renderTrigger={<SidebarTrigger />}
+      />
     </SidebarHeader>
   )
 }
@@ -80,7 +79,7 @@ function SideNavLink({
           return (
             <>
               {<LucideIcon className="text-white" />}
-              <span className="text-white">{label}</span>
+              {label ? <span className="text-white">{label}</span> : null}
             </>
           )
         }
@@ -114,7 +113,7 @@ const nav: Array<ComponentProps<typeof SideNavLink>> = [
   {
     to: '/$slug/practitioners',
     label: 'Practitioners',
-    LucideIcon: UsersRound,
+    LucideIcon: Stethoscope,
   },
   {
     to: '/$slug/settings',
@@ -131,6 +130,7 @@ function AppSideBarContent() {
         {nav.map((props, idx) => (
           <SidebarMenuItem key={idx}>
             <SidebarMenuButton
+              tooltip={{ align: 'end', children: props.label }}
               render={
                 <SideNavLink
                   label={props.label}

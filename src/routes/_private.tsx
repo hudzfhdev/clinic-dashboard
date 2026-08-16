@@ -1,5 +1,5 @@
-import { AppSideBar } from '#/components/app-sidebar.tsx'
-import { SidebarProvider } from '#/components/ui/sidebar.tsx'
+import { AppSideBar } from '@/components/app-sidebar.tsx'
+import { SidebarProvider } from '@/components/ui/sidebar.tsx'
 import { createFileRoute, Outlet } from '@tanstack/react-router'
 
 export const Route = createFileRoute('/_private')({

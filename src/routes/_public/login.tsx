@@ -14,9 +14,6 @@ import { Label } from '@/components/ui/label'
 
 export const Route = createFileRoute('/_public/login')({
   component: RouteComponent,
-  loader: (ctx) => {
-    return null
-  },
 })
 
 function RouteComponent() {

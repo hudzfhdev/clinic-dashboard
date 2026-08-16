@@ -4,17 +4,13 @@ import {
   Scripts,
   createRootRouteWithContext,
 } from '@tanstack/react-router'
-// import { TanStackRouterDevtoolsPanel } from '@tanstack/react-router-devtools'
-// import { TanStackDevtools } from '@tanstack/react-devtools'
-
-import TanStackQueryDevtools from '../integrations/tanstack-query/devtools'
-
 import appCss from '../styles.css?url'
 
-import type { QueryClient } from '@tanstack/react-query'
-import { Button } from '#/components/ui/button.tsx'
+import { type QueryClient } from '@tanstack/react-query'
+import { Button } from '@/components/ui/button.tsx'
 import { ArrowLeft } from 'lucide-react'
-import { TooltipProvider } from '#/components/ui/tooltip'
+import { TooltipProvider } from '@/components/ui/tooltip'
+import TanstackQueryProvider from '@/integrations/tanstack-query/root-provider'
 
 interface MyRouterContext {
   queryClient: QueryClient
@@ -67,7 +63,9 @@ function RootDocument({ children }: { children: React.ReactNode }) {
         <HeadContent />
       </head>
       <body>
-        <TooltipProvider>{children}</TooltipProvider>
+        <TanstackQueryProvider>
+          <TooltipProvider>{children}</TooltipProvider>
+        </TanstackQueryProvider>
         {/* <TanStackDevtools
           config={{
             position: 'bottom-right',

@@ -1,10 +1,18 @@
-import { QueryClient } from '@tanstack/react-query'
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query'
+import type { PropsWithChildren } from 'react'
+
+const queryClient = new QueryClient({
+  defaultOptions: { queries: { retry: false } },
+})
 
 export function getContext() {
-  const queryClient = new QueryClient()
-
-  return {
-    queryClient,
-  }
+  return { queryClient }
 }
-export default function TanstackQueryProvider() {}
+
+export default function TanstackQueryProvider({ children }: PropsWithChildren) {
+  return (
+    <QueryClientProvider client={getContext().queryClient}>
+      {children}
+    </QueryClientProvider>
+  )
+}
