@@ -11,12 +11,17 @@ import {
 } from '@/components/ui/card'
 import { Input } from '@/components/ui/input'
 import { Label } from '@/components/ui/label'
+import { useQuery } from '@tanstack/react-query'
+import { PatientAPIService } from '@/components/modules/patients/patients.service'
+
+const Patient = PatientAPIService.instantiate()
 
 export const Route = createFileRoute('/_public/login')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
+  const { data } = useQuery(Patient.fetchListQueryOpt())
   return (
     <div className="grid place-items-center h-screen">
       <form className="w-full max-w-sm">

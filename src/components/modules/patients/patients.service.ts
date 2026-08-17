@@ -1,35 +1,21 @@
-import type { APIResponse } from '@/lib/api'
-import type {
-  Query,
-  QueryOptions,
-  UseQueryOptions,
-} from '@tanstack/react-query'
+import { BaseAPIService, type APIResponse } from '@/lib/api'
+import type { UseQueryOptions } from '@tanstack/react-query'
 import ky from 'ky'
-
-class BaseAPIService {
-  controller: AbortController
-  proxyURL: string
-
-  constructor() {
-    this.controller = new AbortController()
-    this.proxyURL = '/server'
-  }
-
-  makeQueryKey(...keys: string[]) {
-    return `${this.proxyURL}/`.concat(keys.join('/'))
-  }
-}
 
 export class PatientAPIService extends BaseAPIService {
   constructor() {
     super()
   }
 
+  static instantiate() {
+    return new PatientAPIService()
+  }
+
   /** @url `/api/patients` */
   fetchListQueryOpt<TResponse extends APIResponse<{ patients: [] }>>(
     opt?: Omit<UseQueryOptions<TResponse>, 'queryKey' | 'queryFn'>,
   ) {
-    const url = this.makeQueryKey('api', 'patients')
+    const url = this.makeURL('api', 'patients')
     return {
       ...opt,
       queryKey: [url],
