@@ -15,11 +15,15 @@ import { Route as PublicRouteImport } from './routes/_public'
 import { Route as PrivateSlugRouteImport } from './routes/_private/$slug'
 import { Route as PublicLoginRouteImport } from './routes/_public/login'
 import { Route as PublicSignUpRouteImport } from './routes/_public/sign-up'
+import { Route as AdminPrivateRouteImport } from './routes/admin/_private'
+import { Route as AdminPublicRouteImport } from './routes/admin/_public'
 import { Route as PrivateSlugAppointmentsRouteImport } from './routes/_private/$slug.appointments'
 import { Route as PrivateSlugDashboardRouteImport } from './routes/_private/$slug.dashboard'
 import { Route as PrivateSlugPatientsRouteImport } from './routes/_private/$slug.patients'
 import { Route as PrivateSlugPractitionersRouteImport } from './routes/_private/$slug.practitioners'
 import { Route as PrivateSlugSettingsRouteImport } from './routes/_private/$slug.settings'
+import { Route as AdminPrivateDashboardRouteImport } from './routes/admin/_private/dashboard'
+import { Route as AdminPublicLoginRouteImport } from './routes/admin/_public/login'
 
 const IndexRoute = IndexRouteImport.update({
   id: '/',
@@ -49,6 +53,16 @@ const PublicSignUpRoute = PublicSignUpRouteImport.update({
   path: '/sign-up',
   getParentRoute: () => PublicRoute,
 } as any)
+const AdminPrivateRoute = AdminPrivateRouteImport.update({
+  id: '/admin/_private',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
+const AdminPublicRoute = AdminPublicRouteImport.update({
+  id: '/admin/_public',
+  path: '/admin',
+  getParentRoute: () => rootRouteImport,
+} as any)
 const PrivateSlugAppointmentsRoute = PrivateSlugAppointmentsRouteImport.update({
   id: '/appointments',
   path: '/appointments',
@@ -75,28 +89,44 @@ const PrivateSlugSettingsRoute = PrivateSlugSettingsRouteImport.update({
   path: '/settings',
   getParentRoute: () => PrivateSlugRoute,
 } as any)
+const AdminPrivateDashboardRoute = AdminPrivateDashboardRouteImport.update({
+  id: '/dashboard',
+  path: '/dashboard',
+  getParentRoute: () => AdminPrivateRoute,
+} as any)
+const AdminPublicLoginRoute = AdminPublicLoginRouteImport.update({
+  id: '/login',
+  path: '/login',
+  getParentRoute: () => AdminPublicRoute,
+} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof IndexRoute
   '/$slug': typeof PrivateSlugRouteWithChildren
   '/login': typeof PublicLoginRoute
   '/sign-up': typeof PublicSignUpRoute
+  '/admin': typeof AdminPublicRouteWithChildren
   '/$slug/appointments': typeof PrivateSlugAppointmentsRoute
   '/$slug/dashboard': typeof PrivateSlugDashboardRoute
   '/$slug/patients': typeof PrivateSlugPatientsRoute
   '/$slug/practitioners': typeof PrivateSlugPractitionersRoute
   '/$slug/settings': typeof PrivateSlugSettingsRoute
+  '/admin/dashboard': typeof AdminPrivateDashboardRoute
+  '/admin/login': typeof AdminPublicLoginRoute
 }
 export interface FileRoutesByTo {
   '/': typeof IndexRoute
   '/$slug': typeof PrivateSlugRouteWithChildren
   '/login': typeof PublicLoginRoute
   '/sign-up': typeof PublicSignUpRoute
+  '/admin': typeof AdminPublicRouteWithChildren
   '/$slug/appointments': typeof PrivateSlugAppointmentsRoute
   '/$slug/dashboard': typeof PrivateSlugDashboardRoute
   '/$slug/patients': typeof PrivateSlugPatientsRoute
   '/$slug/practitioners': typeof PrivateSlugPractitionersRoute
   '/$slug/settings': typeof PrivateSlugSettingsRoute
+  '/admin/dashboard': typeof AdminPrivateDashboardRoute
+  '/admin/login': typeof AdminPublicLoginRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
@@ -106,11 +136,15 @@ export interface FileRoutesById {
   '/_private/$slug': typeof PrivateSlugRouteWithChildren
   '/_public/login': typeof PublicLoginRoute
   '/_public/sign-up': typeof PublicSignUpRoute
+  '/admin/_private': typeof AdminPrivateRouteWithChildren
+  '/admin/_public': typeof AdminPublicRouteWithChildren
   '/_private/$slug/appointments': typeof PrivateSlugAppointmentsRoute
   '/_private/$slug/dashboard': typeof PrivateSlugDashboardRoute
   '/_private/$slug/patients': typeof PrivateSlugPatientsRoute
   '/_private/$slug/practitioners': typeof PrivateSlugPractitionersRoute
   '/_private/$slug/settings': typeof PrivateSlugSettingsRoute
+  '/admin/_private/dashboard': typeof AdminPrivateDashboardRoute
+  '/admin/_public/login': typeof AdminPublicLoginRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
@@ -119,22 +153,28 @@ export interface FileRouteTypes {
     | '/$slug'
     | '/login'
     | '/sign-up'
+    | '/admin'
     | '/$slug/appointments'
     | '/$slug/dashboard'
     | '/$slug/patients'
     | '/$slug/practitioners'
     | '/$slug/settings'
+    | '/admin/dashboard'
+    | '/admin/login'
   fileRoutesByTo: FileRoutesByTo
   to:
     | '/'
     | '/$slug'
     | '/login'
     | '/sign-up'
+    | '/admin'
     | '/$slug/appointments'
     | '/$slug/dashboard'
     | '/$slug/patients'
     | '/$slug/practitioners'
     | '/$slug/settings'
+    | '/admin/dashboard'
+    | '/admin/login'
   id:
     | '__root__'
     | '/'
@@ -143,17 +183,23 @@ export interface FileRouteTypes {
     | '/_private/$slug'
     | '/_public/login'
     | '/_public/sign-up'
+    | '/admin/_private'
+    | '/admin/_public'
     | '/_private/$slug/appointments'
     | '/_private/$slug/dashboard'
     | '/_private/$slug/patients'
     | '/_private/$slug/practitioners'
     | '/_private/$slug/settings'
+    | '/admin/_private/dashboard'
+    | '/admin/_public/login'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
   IndexRoute: typeof IndexRoute
   PrivateRoute: typeof PrivateRouteWithChildren
   PublicRoute: typeof PublicRouteWithChildren
+  AdminPrivateRoute: typeof AdminPrivateRouteWithChildren
+  AdminPublicRoute: typeof AdminPublicRouteWithChildren
 }
 
 declare module '@tanstack/react-router' {
@@ -200,6 +246,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof PublicSignUpRouteImport
       parentRoute: typeof PublicRoute
     }
+    '/admin/_private': {
+      id: '/admin/_private'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminPrivateRouteImport
+      parentRoute: typeof rootRouteImport
+    }
+    '/admin/_public': {
+      id: '/admin/_public'
+      path: '/admin'
+      fullPath: '/admin'
+      preLoaderRoute: typeof AdminPublicRouteImport
+      parentRoute: typeof rootRouteImport
+    }
     '/_private/$slug/appointments': {
       id: '/_private/$slug/appointments'
       path: '/appointments'
@@ -234,6 +294,20 @@ declare module '@tanstack/react-router' {
       fullPath: '/$slug/settings'
       preLoaderRoute: typeof PrivateSlugSettingsRouteImport
       parentRoute: typeof PrivateSlugRoute
+    }
+    '/admin/_private/dashboard': {
+      id: '/admin/_private/dashboard'
+      path: '/dashboard'
+      fullPath: '/admin/dashboard'
+      preLoaderRoute: typeof AdminPrivateDashboardRouteImport
+      parentRoute: typeof AdminPrivateRoute
+    }
+    '/admin/_public/login': {
+      id: '/admin/_public/login'
+      path: '/login'
+      fullPath: '/admin/login'
+      preLoaderRoute: typeof AdminPublicLoginRouteImport
+      parentRoute: typeof AdminPublicRoute
     }
   }
 }
@@ -282,10 +356,36 @@ const PublicRouteChildren: PublicRouteChildren = {
 const PublicRouteWithChildren =
   PublicRoute._addFileChildren(PublicRouteChildren)
 
+interface AdminPrivateRouteChildren {
+  AdminPrivateDashboardRoute: typeof AdminPrivateDashboardRoute
+}
+
+const AdminPrivateRouteChildren: AdminPrivateRouteChildren = {
+  AdminPrivateDashboardRoute: AdminPrivateDashboardRoute,
+}
+
+const AdminPrivateRouteWithChildren = AdminPrivateRoute._addFileChildren(
+  AdminPrivateRouteChildren,
+)
+
+interface AdminPublicRouteChildren {
+  AdminPublicLoginRoute: typeof AdminPublicLoginRoute
+}
+
+const AdminPublicRouteChildren: AdminPublicRouteChildren = {
+  AdminPublicLoginRoute: AdminPublicLoginRoute,
+}
+
+const AdminPublicRouteWithChildren = AdminPublicRoute._addFileChildren(
+  AdminPublicRouteChildren,
+)
+
 const rootRouteChildren: RootRouteChildren = {
   IndexRoute: IndexRoute,
   PrivateRoute: PrivateRouteWithChildren,
   PublicRoute: PublicRouteWithChildren,
+  AdminPrivateRoute: AdminPrivateRouteWithChildren,
+  AdminPublicRoute: AdminPublicRouteWithChildren,
 }
 export const routeTree = rootRouteImport
   ._addFileChildren(rootRouteChildren)
